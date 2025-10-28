@@ -52,7 +52,7 @@ export default function MarketingPage() {
                         </div>
                         <div className="flex flex-col gap-2 min-[400px]:flex-row">
                             <Button size="lg" asChild>
-                                <Link href="/login">Get a Demo</Link>
+                                <Link href="#contact">Get a Demo</Link>
                             </Button>
                             <Button size="lg" variant="outline" asChild>
                                 <Link href="#features">Learn More</Link>
