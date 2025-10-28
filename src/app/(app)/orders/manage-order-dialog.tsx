@@ -15,9 +15,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Order, OrderItem } from '@/lib/types';
+import { Order } from '@/lib/types';
 import { Utensils } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -27,14 +29,26 @@ interface ManageOrderDialogProps {
   order: Order | null;
 }
 
-const menuItems = [
-    { id: 'm1', name: 'Butter Chicken', price: 15.00 },
-    { id: 'm2', name: 'Garlic Naan', price: 4.00 },
-    { id: 'm3', name: 'Palak Paneer', price: 13.00 },
-    { id: 'm4', name: 'Mango Lassi', price: 5.00 },
-    { id: 'm5', name: 'Samosa', price: 6.00 },
-    { id: 'm6', name: 'Biryani', price: 18.00 },
+type MenuItem = {
+  id: string;
+  name: string;
+  price: number;
+  category: 'Starters' | 'Main Course' | 'Desserts' | 'Drinks';
+  type: 'Veg' | 'Non-Veg';
+};
+
+const menuItems: MenuItem[] = [
+    { id: 'm1', name: 'Paneer Tikka', price: 12.00, category: 'Starters', type: 'Veg' },
+    { id: 'm2', name: 'Garlic Naan', price: 4.00, category: 'Main Course', type: 'Veg' },
+    { id: 'm3', name: 'Palak Paneer', price: 13.00, category: 'Main Course', type: 'Veg' },
+    { id: 'm4', name: 'Mango Lassi', price: 5.00, category: 'Drinks', type: 'Veg' },
+    { id: 'm5', name: 'Samosa', price: 6.00, category: 'Starters', type: 'Veg' },
+    { id: 'm6', name: 'Veg Biryani', price: 14.00, category: 'Main Course', type: 'Veg' },
+    { id: 'm7', name: 'Gulab Jamun', price: 5.00, category: 'Desserts', type: 'Veg' },
+    { id: 'm8', name: 'Coke', price: 3.00, category: 'Drinks', type: 'Veg' },
 ];
+
+const menuCategories = Array.from(new Set(menuItems.map(item => item.category)));
 
 
 export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProps) {
@@ -144,8 +158,13 @@ export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProp
                             <SelectValue placeholder="Select an item to add" />
                         </SelectTrigger>
                         <SelectContent>
-                            {menuItems.map(item => (
-                                <SelectItem key={item.id} value={item.id}>{item.name} - ${item.price.toFixed(2)}</SelectItem>
+                            {menuCategories.map(category => (
+                                <SelectGroup key={category}>
+                                    <SelectLabel>{category}</SelectLabel>
+                                    {menuItems.filter(item => item.category === category).map(item => (
+                                        <SelectItem key={item.id} value={item.id}>{item.name} - ${item.price.toFixed(2)}</SelectItem>
+                                    ))}
+                                </SelectGroup>
                             ))}
                         </SelectContent>
                     </Select>
