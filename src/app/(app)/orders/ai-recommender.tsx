@@ -80,11 +80,11 @@ export function AIRecommender({ orderHistory }: AIRecommenderProps) {
           <div className="grid gap-4 py-4">
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="trends">Current Trends (comma-separated)</Label>
-              <Input id="trends" name="trends" defaultValue="Spicy Margarita, Truffle Fries" />
+              <Input id="trends" name="trends" defaultValue="Dal Makhani, Chicken Tikka" />
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="feedback">Customer Feedback/Preferences</Label>
-              <Input id="feedback" name="feedback" placeholder="e.g., 'looking for something light'" />
+              <Input id="feedback" name="feedback" placeholder="e.g., 'looking for something spicy'" />
             </div>
             {orderHistory.length > 0 && (
                  <div className="grid w-full items-center gap-1.5">

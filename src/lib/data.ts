@@ -37,16 +37,16 @@ export const restaurants: Restaurant[] = [
 
 const sampleOrder1: Order = {
     id: 'o1',
-    items: [{id: 'm1', name: 'Margherita Pizza', price: 12.50, quantity: 1}, {id: 'm2', name: 'Coke', price: 2.50, quantity: 2}],
-    total: 17.50,
+    items: [{id: 'm1', name: 'Butter Chicken', price: 15.00, quantity: 1}, {id: 'm2', name: 'Garlic Naan', price: 4.00, quantity: 2}],
+    total: 23.00,
     status: 'Preparing',
     timestamp: new Date()
 }
 
 const sampleOrder2: Order = {
     id: 'o2',
-    items: [{id: 'm3', name: 'Caesar Salad', price: 9.00, quantity: 2}, {id: 'm4', name: 'Iced Tea', price: 3.00, quantity: 2}],
-    total: 24.00,
+    items: [{id: 'm3', name: 'Palak Paneer', price: 13.00, quantity: 1}, {id: 'm4', name: 'Mango Lassi', price: 5.00, quantity: 2}],
+    total: 23.00,
     status: 'Served',
     timestamp: new Date()
 }
@@ -79,9 +79,9 @@ export const salesData = [
 ];
 
 export const topItemsData = [
-  { name: 'Margherita Pizza', sold: 120 },
-  { name: 'Caesar Salad', sold: 98 },
-  { name: 'Classic Burger', sold: 85 },
-  { name: 'Pasta Carbonara', sold: 70 },
-  { name: 'Coke', sold: 250 },
+  { name: 'Butter Chicken', sold: 120 },
+  { name: 'Samosa', sold: 210 },
+  { name: 'Paneer Tikka', sold: 95 },
+  { name: 'Biryani', sold: 80 },
+  { name: 'Mango Lassi', sold: 150 },
 ];
