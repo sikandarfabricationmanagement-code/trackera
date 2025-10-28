@@ -24,33 +24,46 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-muted/40 p-4">
+      <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
       <div className="mb-8 flex items-center gap-4 text-primary">
         <Logo className="h-12 w-12" />
-        <h1 className="font-headline text-5xl font-bold">RestroZen</h1>
+        <h1 className="font-headline text-5xl font-bold tracking-tighter">RestroZen</h1>
       </div>
-      <Card className="w-full max-w-md shadow-2xl">
+      <Card className="w-full max-w-md shadow-2xl rounded-2xl">
         <CardHeader className="text-center">
-          <CardTitle className="font-headline text-2xl">Welcome Back!</CardTitle>
-          <CardDescription>Please select your role to continue</CardDescription>
+          <CardTitle className="font-headline text-3xl tracking-tight">Welcome Back</CardTitle>
+          <CardDescription>Select your role to sign in to your dashboard</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4">
             <Button
               variant="outline"
-              className="h-24 flex-col gap-2 text-lg"
+              size="lg"
+              className="h-28 flex-col gap-2 text-lg hover:bg-primary/5 hover:border-primary transition-all duration-300 group"
               onClick={() => handleLogin('manager')}
             >
-              <Users className="h-8 w-8" />
-              Manager
+              <div className="flex items-center gap-4">
+                <Users className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+                <div className="text-left">
+                    <p className="font-semibold">Manager</p>
+                    <p className="text-sm text-muted-foreground">Access admin and analytics tools.</p>
+                </div>
+              </div>
             </Button>
             <Button
               variant="outline"
-              className="h-24 flex-col gap-2 text-lg"
+              size="lg"
+              className="h-28 flex-col gap-2 text-lg hover:bg-primary/5 hover:border-primary transition-all duration-300 group"
               onClick={() => handleLogin('staff')}
             >
-              <ChefHat className="h-8 w-8" />
-              Staff
+               <div className="flex items-center gap-4">
+                <ChefHat className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+                 <div className="text-left">
+                    <p className="font-semibold">Staff</p>
+                    <p className="text-sm text-muted-foreground">Access orders and table management.</p>
+                </div>
+              </div>
             </Button>
           </div>
         </CardContent>
