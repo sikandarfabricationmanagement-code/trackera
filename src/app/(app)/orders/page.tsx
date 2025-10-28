@@ -6,6 +6,7 @@ import { tables } from '@/lib/data';
 import type { Table, OrderItem } from '@/lib/types';
 import { Armchair, Clock, Utensils, Lightbulb } from 'lucide-react';
 import { AIRecommender } from './ai-recommender';
+import { ManageOrderDialog } from './manage-order-dialog';
 
 const getStatusColor = (status: Table['status']) => {
   switch (status) {
@@ -50,10 +51,7 @@ const TableCard = ({ table }: { table: Table }) => (
       )}
     </CardContent>
     <CardFooter className="flex gap-2">
-      <Button variant="outline" className="w-full">
-        <Utensils className="mr-2 h-4 w-4" />
-        Manage Order
-      </Button>
+      <ManageOrderDialog order={table.currentOrder} />
       <AIRecommender orderHistory={table.currentOrder?.items || []} />
     </CardFooter>
   </Card>
