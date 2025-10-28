@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useRole } from '@/hooks/use-role';
-import { DollarSign, Users, ClipboardList, Utensils } from 'lucide-react';
+import { DollarSign, Users, ClipboardList, Utensils, Building } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const ManagerDashboard = () => (
@@ -95,12 +95,75 @@ const StaffDashboard = () => {
     )
 };
 
+const SuperAdminDashboard = () => (
+    <>
+      <div className="flex items-center">
+          <h1 className="text-lg font-semibold md:text-2xl font-headline">Super Admin Dashboard</h1>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Restaurants</CardTitle>
+              <Building className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">150</div>
+              <p className="text-xs text-muted-foreground">+10% from last month</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">$1.2M</div>
+              <p className="text-xs text-muted-foreground">+5.2% from last month</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">5,302</div>
+              <p className="text-xs text-muted-foreground">Across all restaurants</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Support Tickets</CardTitle>
+              <ClipboardList className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">12</div>
+              <p className="text-xs text-muted-foreground">Open tickets</p>
+            </CardContent>
+          </Card>
+        </div>
+    </>
+);
+
+const renderDashboard = (role: string | null) => {
+    switch (role) {
+        case 'manager':
+            return <ManagerDashboard />;
+        case 'staff':
+            return <StaffDashboard />;
+        case 'super-admin':
+            return <SuperAdminDashboard />;
+        default:
+            return <div>Loading...</div>;
+    }
+}
+
 export default function DashboardPage() {
   const { role } = useRole();
 
   return (
     <div className="flex flex-col gap-4">
-      {role === 'manager' ? <ManagerDashboard /> : <StaffDashboard />}
+      {renderDashboard(role)}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
   ClipboardList,
   LayoutDashboard,
   Users,
+  Shield,
 } from 'lucide-react';
 import type { UserRole } from '@/hooks/use-role';
 
@@ -26,13 +27,26 @@ const staffNavItems = [
   { title: 'Orders', href: '/orders', icon: ClipboardList },
 ];
 
+const superAdminNavItems = [
+    { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { title: 'Restaurants', href: '/restaurants', icon: Building },
+    { title: 'System Analytics', href: '/system-analytics', icon: BarChart2 },
+    { title: 'Subscriptions', href: '/subscriptions', icon: Shield },
+];
+
+const navConfig = {
+    manager: managerNavItems,
+    staff: staffNavItems,
+    'super-admin': superAdminNavItems
+}
+
 interface MainNavProps {
   role: UserRole;
 }
 
 export function MainNav({ role }: MainNavProps) {
   const pathname = usePathname();
-  const navItems = role === 'manager' ? managerNavItems : staffNavItems;
+  const navItems = role ? navConfig[role] : [];
 
   return (
     <nav className="flex flex-col gap-2 px-4">

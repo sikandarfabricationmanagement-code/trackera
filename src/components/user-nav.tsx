@@ -14,6 +14,18 @@ import {
 import { useRole } from '@/hooks/use-role';
 import { LogOut, Settings, User } from 'lucide-react';
 
+const roleDisplayNames = {
+  'manager': 'Admin',
+  'staff': 'Staff Member',
+  'super-admin': 'Super Admin'
+};
+
+const roleEmails = {
+    'manager': 'admin@trackera.com',
+    'staff': 'staff@trackera.com',
+    'super-admin': 'superadmin@trackera.com'
+}
+
 export function UserNav() {
   const { logout, role } = useRole();
 
@@ -31,10 +43,10 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {role === 'manager' ? 'Admin' : 'Staff Member'}
+              {role ? roleDisplayNames[role] : ''}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {role === 'manager' ? 'admin@trackera.com' : 'staff@trackera.com'}
+              {role ? roleEmails[role] : ''}
             </p>
           </div>
         </DropdownMenuLabel>

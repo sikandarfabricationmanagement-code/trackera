@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRole } from '@/hooks/use-role';
 import { Logo } from '@/components/logo';
-import { Users, ChefHat } from 'lucide-react';
+import { Users, ChefHat, ShieldCheck } from 'lucide-react';
 import { useEffect } from 'react';
 
 export default function LoginPage() {
@@ -18,7 +18,7 @@ export default function LoginPage() {
     }
   }, [role, router]);
 
-  const handleLogin = (selectedRole: 'manager' | 'staff') => {
+  const handleLogin = (selectedRole: 'manager' | 'staff' | 'super-admin') => {
     setRole(selectedRole);
     router.push('/dashboard');
   };
@@ -37,6 +37,20 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4">
+            <Button
+              variant="outline"
+              size="lg"
+              className="h-28 flex-col gap-2 text-lg hover:bg-primary/5 hover:border-primary transition-all duration-300 group"
+              onClick={() => handleLogin('super-admin')}
+            >
+              <div className="flex items-center gap-4">
+                <ShieldCheck className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+                <div className="text-left">
+                    <p className="font-semibold">Super Admin</p>
+                    <p className="text-sm text-muted-foreground">Manage Trackera platform.</p>
+                </div>
+              </div>
+            </Button>
             <Button
               variant="outline"
               size="lg"

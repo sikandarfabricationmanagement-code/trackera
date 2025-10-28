@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-export type UserRole = 'manager' | 'staff' | null;
+export type UserRole = 'manager' | 'staff' | 'super-admin' | null;
 
 export const useRole = () => {
   const [role, setRole] = useState<UserRole>(null);
@@ -17,13 +17,13 @@ export const useRole = () => {
        // Silently fail if localStorage is not available
     }
 
-    if (storedRole && ['manager', 'staff'].includes(storedRole)) {
+    if (storedRole && ['manager', 'staff', 'super-admin'].includes(storedRole)) {
       setRole(storedRole);
     }
     setIsMounted(true);
   }, []);
 
-  const setRoleAndStore = useCallback((newRole: 'manager' | 'staff' | null) => {
+  const setRoleAndStore = useCallback((newRole: 'manager' | 'staff' | 'super-admin' | null) => {
     setRole(newRole);
     try {
       if (newRole) {
