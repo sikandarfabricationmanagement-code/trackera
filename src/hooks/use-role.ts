@@ -38,7 +38,7 @@ export const useRole = () => {
   
   const logout = useCallback(() => {
     setRoleAndStore(null);
-    router.push('/');
+    router.push('/login');
   }, [setRoleAndStore, router]);
 
   return { role: isMounted ? role : null, setRole: setRoleAndStore, logout, isMounted };

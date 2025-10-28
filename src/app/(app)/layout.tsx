@@ -14,7 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isMounted && !role) {
-      router.push('/');
+      router.push('/login');
     }
   }, [role, isMounted, router]);
 
