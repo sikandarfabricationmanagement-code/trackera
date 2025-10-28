@@ -2,16 +2,16 @@ import type { Restaurant, User, Table, Order } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 export const users: User[] = [
-  { id: 'u1', name: 'Alice Johnson', email: 'alice.j@example.com', role: 'Manager', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-1')?.imageUrl || '', status: 'Active' },
-  { id: 'u2', name: 'Bob Williams', email: 'bob.w@example.com', role: 'Cashier', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-2')?.imageUrl || '', status: 'Active' },
-  { id: 'u3', name: 'Charlie Brown', email: 'charlie.b@example.com', role: 'Waiter', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-3')?.imageUrl || '', status: 'Active' },
-  { id: 'u4', name: 'Diana Prince', email: 'diana.p@example.com', role: 'Kitchen Staff', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-4')?.imageUrl || '', status: 'Active' },
-  { id: 'u5', name: 'Ethan Hunt', email: 'ethan.h@example.com', role: 'Manager', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-5')?.imageUrl || '', status: 'Inactive' },
-  { id: 'u6', name: 'Fiona Glenanne', email: 'fiona.g@example.com', role: 'Waiter', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-6')?.imageUrl || '', status: 'Active' },
-  { id: 'u7', name: 'George Costanza', email: 'george.c@example.com', role: 'Kitchen Staff', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-7')?.imageUrl || '', status: 'Active' },
-  { id: 'u8', name: 'Hannah Abbott', email: 'hannah.a@example.com', role: 'Cashier', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-8')?.imageUrl || '', status: 'Active' },
-  { id: 'u9', name: 'Ian Malcolm', email: 'ian.m@example.com', role: 'Waiter', branch: 'Midtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-9')?.imageUrl || '', status: 'Active' },
-  { id: 'u10', name: 'Jane Smith', email: 'jane.s@example.com', role: 'Manager', branch: 'Midtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-10')?.imageUrl || '', status: 'Active' },
+  { id: 'u1', name: 'User 1', email: 'user.1@example.com', role: 'Manager', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-1')?.imageUrl || '', status: 'Active' },
+  { id: 'u2', name: 'User 2', email: 'user.2@example.com', role: 'Cashier', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-2')?.imageUrl || '', status: 'Active' },
+  { id: 'u3', name: 'User 3', email: 'user.3@example.com', role: 'Waiter', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-3')?.imageUrl || '', status: 'Active' },
+  { id: 'u4', name: 'User 4', email: 'user.4@example.com', role: 'Kitchen Staff', branch: 'Downtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-4')?.imageUrl || '', status: 'Active' },
+  { id: 'u5', name: 'User 5', email: 'user.5@example.com', role: 'Manager', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-5')?.imageUrl || '', status: 'Inactive' },
+  { id: 'u6', name: 'User 6', email: 'user.6@example.com', role: 'Waiter', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-6')?.imageUrl || '', status: 'Active' },
+  { id: 'u7', name: 'User 7', email: 'user.7@example.com', role: 'Kitchen Staff', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-7')?.imageUrl || '', status: 'Active' },
+  { id: 'u8', name: 'User 8', email: 'user.8@example.com', role: 'Cashier', branch: 'Uptown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-8')?.imageUrl || '', status: 'Active' },
+  { id: 'u9', name: 'User 9', email: 'user.9@example.com', role: 'Waiter', branch: 'Midtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-9')?.imageUrl || '', status: 'Active' },
+  { id: 'u10', name: 'User 10', email: 'user.10@example.com', role: 'Manager', branch: 'Midtown', avatarUrl: PlaceHolderImages.find(p => p.id === 'user-avatar-10')?.imageUrl || '', status: 'Active' },
 ];
 
 export const restaurants: Restaurant[] = [

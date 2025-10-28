@@ -15,13 +15,13 @@ import { useRole } from '@/hooks/use-role';
 import { LogOut, Settings, User } from 'lucide-react';
 
 const roleDisplayNames = {
-  'manager': 'Admin',
-  'staff': 'Staff Member',
+  'manager': 'Manager',
+  'staff': 'Staff',
   'super-admin': 'Super Admin'
 };
 
 const roleEmails = {
-    'manager': 'admin@trackera.com',
+    'manager': 'manager@trackera.com',
     'staff': 'staff@trackera.com',
     'super-admin': 'superadmin@trackera.com'
 }
