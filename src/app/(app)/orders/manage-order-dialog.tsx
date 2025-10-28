@@ -19,7 +19,8 @@ import {
   SelectLabel,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import type { Order, Table } from '@/lib/types';
+import type { Order, Table, MenuItem } from '@/lib/types';
+import { menuItems } from '@/lib/data';
 import { Utensils } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -29,25 +30,6 @@ interface ManageOrderDialogProps {
   table: Table | null;
   onOrderUpdate: (tableId: string, updatedOrder: Order) => void;
 }
-
-type MenuItem = {
-  id: string;
-  name: string;
-  price: number;
-  category: 'Starters' | 'Main Course' | 'Desserts' | 'Drinks';
-  type: 'Veg' | 'Non-Veg';
-};
-
-const menuItems: MenuItem[] = [
-    { id: 'm1', name: 'Paneer Tikka', price: 12.00, category: 'Starters', type: 'Veg' },
-    { id: 'm5', name: 'Samosa', price: 6.00, category: 'Starters', type: 'Veg' },
-    { id: 'm2', name: 'Garlic Naan', price: 4.00, category: 'Main Course', type: 'Veg' },
-    { id: 'm3', name: 'Palak Paneer', price: 13.00, category: 'Main Course', type: 'Veg' },
-    { id: 'm6', name: 'Veg Biryani', price: 14.00, category: 'Main Course', type: 'Veg' },
-    { id: 'm7', name: 'Gulab Jamun', price: 5.00, category: 'Desserts', type: 'Veg' },
-    { id: 'm4', name: 'Mango Lassi', price: 5.00, category: 'Drinks', type: 'Veg' },
-    { id: 'm8', name: 'Coke', price: 3.00, category: 'Drinks', type: 'Veg' },
-];
 
 const menuCategories = Array.from(new Set(menuItems.map(item => item.category)));
 

@@ -25,6 +25,14 @@ export type Restaurant = {
   branches: Branch[];
 };
 
+export type MenuItem = {
+  id: string;
+  name: string;
+  price: number;
+  category: 'Starters' | 'Main Course' | 'Desserts' | 'Drinks';
+  type: 'Veg' | 'Non-Veg';
+};
+
 export type OrderItem = {
   id: string;
   name: string;

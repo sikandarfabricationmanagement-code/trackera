@@ -1,4 +1,4 @@
-import type { Restaurant, User, Table, Order } from './types';
+import type { Restaurant, User, Table, Order, MenuItem } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 export const users: User[] = [
@@ -33,6 +33,17 @@ export const restaurants: Restaurant[] = [
       { id: 'b4', name: 'SoHo', location: '101 Prince St', managerId: 'u1', status: 'Active' },
     ],
   },
+];
+
+export const menuItems: MenuItem[] = [
+    { id: 'm1', name: 'Paneer Tikka', price: 12.00, category: 'Starters', type: 'Veg' },
+    { id: 'm5', name: 'Samosa', price: 6.00, category: 'Starters', type: 'Veg' },
+    { id: 'm2', name: 'Garlic Naan', price: 4.00, category: 'Main Course', type: 'Veg' },
+    { id: 'm3', name: 'Palak Paneer', price: 13.00, category: 'Main Course', type: 'Veg' },
+    { id: 'm6', name: 'Veg Biryani', price: 14.00, category: 'Main Course', type: 'Veg' },
+    { id: 'm7', name: 'Gulab Jamun', price: 5.00, category: 'Desserts', type: 'Veg' },
+    { id: 'm4', name: 'Mango Lassi', price: 5.00, category: 'Drinks', type: 'Veg' },
+    { id: 'm8', name: 'Coke', price: 3.00, category: 'Drinks', type: 'Veg' },
 ];
 
 const sampleOrder1: Order = {

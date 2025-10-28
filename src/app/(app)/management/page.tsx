@@ -24,8 +24,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { restaurants, users } from '@/lib/data';
-import type { Restaurant, Branch, User } from '@/lib/types';
+import { restaurants, users, menuItems } from '@/lib/data';
+import type { Restaurant, Branch, User, MenuItem } from '@/lib/types';
 import { MoreHorizontal, PlusCircle } from 'lucide-react';
 import { useRole } from '@/hooks/use-role';
 import { useRouter } from 'next/navigation';
@@ -212,6 +212,61 @@ const UsersTab = () => (
   </Card>
 );
 
+const MenuTab = () => (
+    <Card>
+      <CardHeader className="flex flex-row items-center">
+        <div className="grid gap-2">
+          <CardTitle className="font-headline">Menu Items</CardTitle>
+          <CardDescription>Manage your restaurant's menu.</CardDescription>
+        </div>
+        <Button asChild size="sm" className="ml-auto gap-1">
+          <a href="#">
+            <PlusCircle className="h-4 w-4" />
+            Add Menu Item
+          </a>
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Type</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead><span className="sr-only">Actions</span></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {menuItems.map((item: MenuItem) => (
+              <TableRow key={item.id}>
+                <TableCell className="font-medium">{item.name}</TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell><Badge variant={item.type === 'Veg' ? 'default' : 'destructive'} className={item.type === 'Veg' ? 'bg-green-500/20 text-green-700 border-green-500/20' : 'bg-red-500/20 text-red-700 border-red-500/20'}>{item.type}</Badge></TableCell>
+                <TableCell>${item.price.toFixed(2)}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem>Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+);
+
 
 export default function ManagementPage() {
     const { role, isMounted } = useRole();
@@ -242,6 +297,7 @@ export default function ManagementPage() {
           <TabsTrigger value="restaurants">Restaurants</TabsTrigger>
           <TabsTrigger value="branches">Branches</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="menu">Menu</TabsTrigger>
         </TabsList>
         <TabsContent value="restaurants">
           <RestaurantsTab />
@@ -251,6 +307,9 @@ export default function ManagementPage() {
         </TabsContent>
         <TabsContent value="users">
           <UsersTab />
+        </TabsContent>
+        <TabsContent value="menu">
+          <MenuTab />
         </TabsContent>
       </Tabs>
     </div>
