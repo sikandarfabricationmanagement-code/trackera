@@ -17,7 +17,7 @@ export function AppHeader() {
           <a className="mr-6 flex items-center space-x-2" href="/dashboard">
             <Logo className="h-6 w-6" />
             <span className="hidden font-bold sm:inline-block font-headline">
-              RestroZen
+              Trackera
             </span>
           </a>
         </div>
@@ -34,7 +34,7 @@ export function AppHeader() {
                <a className="mr-6 flex items-center space-x-2 px-4 mb-6" href="/dashboard">
                   <Logo className="h-6 w-6" />
                   <span className="font-bold sm:inline-block font-headline">
-                    RestroZen
+                    Trackera
                   </span>
                 </a>
               <MainNav role={role} />

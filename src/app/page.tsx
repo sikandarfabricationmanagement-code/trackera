@@ -28,7 +28,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
       <div className="mb-8 flex items-center gap-4 text-primary">
         <Logo className="h-12 w-12" />
-        <h1 className="font-headline text-5xl font-bold tracking-tighter">RestroZen</h1>
+        <h1 className="font-headline text-5xl font-bold tracking-tighter">Trackera</h1>
       </div>
       <Card className="w-full max-w-md shadow-2xl rounded-2xl">
         <CardHeader className="text-center">
@@ -69,7 +69,7 @@ export default function LoginPage() {
         </CardContent>
       </Card>
       <footer className="mt-8 text-center text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} RestroZen. All rights reserved.</p>
+        <p>Made by Optineura. &copy; {new Date().getFullYear()} Trackera. All rights reserved.</p>
       </footer>
     </div>
   );

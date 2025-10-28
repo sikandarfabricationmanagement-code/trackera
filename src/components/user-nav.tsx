@@ -34,7 +34,7 @@ export function UserNav() {
               {role === 'manager' ? 'Admin' : 'Staff Member'}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {role === 'manager' ? 'admin@restrozen.com' : 'staff@restrozen.com'}
+              {role === 'manager' ? 'admin@trackera.com' : 'staff@trackera.com'}
             </p>
           </div>
         </DropdownMenuLabel>
