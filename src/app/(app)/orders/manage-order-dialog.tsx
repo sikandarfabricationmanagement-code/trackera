@@ -19,14 +19,15 @@ import {
   SelectLabel,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Order } from '@/lib/types';
+import type { Order, Table } from '@/lib/types';
 import { Utensils } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 
 interface ManageOrderDialogProps {
-  order: Order | null;
+  table: Table | null;
+  onOrderUpdate: (tableId: string, updatedOrder: Order) => void;
 }
 
 type MenuItem = {
@@ -39,36 +40,44 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
     { id: 'm1', name: 'Paneer Tikka', price: 12.00, category: 'Starters', type: 'Veg' },
+    { id: 'm5', name: 'Samosa', price: 6.00, category: 'Starters', type: 'Veg' },
     { id: 'm2', name: 'Garlic Naan', price: 4.00, category: 'Main Course', type: 'Veg' },
     { id: 'm3', name: 'Palak Paneer', price: 13.00, category: 'Main Course', type: 'Veg' },
-    { id: 'm4', name: 'Mango Lassi', price: 5.00, category: 'Drinks', type: 'Veg' },
-    { id: 'm5', name: 'Samosa', price: 6.00, category: 'Starters', type: 'Veg' },
     { id: 'm6', name: 'Veg Biryani', price: 14.00, category: 'Main Course', type: 'Veg' },
     { id: 'm7', name: 'Gulab Jamun', price: 5.00, category: 'Desserts', type: 'Veg' },
+    { id: 'm4', name: 'Mango Lassi', price: 5.00, category: 'Drinks', type: 'Veg' },
     { id: 'm8', name: 'Coke', price: 3.00, category: 'Drinks', type: 'Veg' },
 ];
 
 const menuCategories = Array.from(new Set(menuItems.map(item => item.category)));
 
 
-export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProps) {
+export function ManageOrderDialog({ table: initialTable, onOrderUpdate }: ManageOrderDialogProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const [order, setOrder] = useState<Order | null>(initialOrder);
+  const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [newMenuItemId, setNewMenuItemId] = useState('');
+  
+  useEffect(() => {
+    if (initialTable?.currentOrder) {
+      setCurrentOrder(JSON.parse(JSON.stringify(initialTable.currentOrder)));
+    } else {
+        setCurrentOrder(null);
+    }
+  }, [initialTable, open]);
 
-  if (!order) {
-    // Handle case where there's no order to manage
+
+  if (!initialTable || !currentOrder) {
     return (
         <Button variant="outline" className="w-full" disabled>
             <Utensils className="mr-2 h-4 w-4" />
-            New Order
+            Manage Order
       </Button>
     )
   }
   
   const handleStatusChange = (newStatus: Order['status']) => {
-    setOrder(prev => prev ? {...prev, status: newStatus} : null);
+    setCurrentOrder(prev => prev ? {...prev, status: newStatus} : null);
   };
 
   const handleAddItem = () => {
@@ -77,7 +86,7 @@ export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProp
     const itemToAdd = menuItems.find(item => item.id === newMenuItemId);
     if (!itemToAdd) return;
 
-    setOrder(prev => {
+    setCurrentOrder(prev => {
         if (!prev) return null;
         const existingItem = prev.items.find(item => item.id === newMenuItemId);
         let newItems;
@@ -93,13 +102,14 @@ export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProp
   }
 
   const handleSave = () => {
-    // In a real app, you would save this to a database
-    console.log('Saving order:', order);
-    toast({
-        title: "Order Updated",
-        description: `Order ${order.id} has been successfully updated.`,
-    });
-    setOpen(false);
+    if (currentOrder && initialTable) {
+        onOrderUpdate(initialTable.id, currentOrder);
+        toast({
+            title: "Order Updated",
+            description: `Order ${currentOrder.id} has been successfully updated.`,
+        });
+        setOpen(false);
+    }
   }
 
 
@@ -113,14 +123,14 @@ export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProp
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle className="font-headline">Manage Order #{order.id}</DialogTitle>
+          <DialogTitle className="font-headline">Manage Order #{currentOrder.id}</DialogTitle>
           <DialogDescription>View, edit, and update the order status.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
             <div>
                 <h4 className="font-medium text-lg mb-2">Current Items</h4>
                 <ul className="space-y-2 text-sm">
-                    {order.items.map(item => (
+                    {currentOrder.items.map(item => (
                          <li key={item.id} className="flex justify-between items-center">
                             <span>{item.name} x {item.quantity}</span>
                             <span>${(item.price * item.quantity).toFixed(2)}</span>
@@ -130,7 +140,7 @@ export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProp
                 <Separator className="my-4" />
                  <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span>${order.total.toFixed(2)}</span>
+                    <span>${currentOrder.total.toFixed(2)}</span>
                 </div>
             </div>
 
@@ -138,7 +148,7 @@ export function ManageOrderDialog({ order: initialOrder }: ManageOrderDialogProp
 
             <div className="grid gap-2">
                  <Label htmlFor="status">Order Status</Label>
-                <Select value={order.status} onValueChange={handleStatusChange}>
+                <Select value={currentOrder.status} onValueChange={handleStatusChange}>
                     <SelectTrigger id="status">
                         <SelectValue placeholder="Select status" />
                     </SelectTrigger>

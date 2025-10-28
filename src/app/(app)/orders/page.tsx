@@ -1,10 +1,10 @@
 'use client';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { tables } from '@/lib/data';
-import type { Table, OrderItem } from '@/lib/types';
-import { Armchair, Clock, Utensils, Lightbulb } from 'lucide-react';
+import { tables as initialTables } from '@/lib/data';
+import type { Table, OrderItem, Order } from '@/lib/types';
+import { Armchair, Clock } from 'lucide-react';
 import { AIRecommender } from './ai-recommender';
 import { ManageOrderDialog } from './manage-order-dialog';
 
@@ -21,7 +21,7 @@ const getStatusColor = (status: Table['status']) => {
   }
 };
 
-const TableCard = ({ table }: { table: Table }) => (
+const TableCard = ({ table, onOrderUpdate }: { table: Table; onOrderUpdate: (tableId: string, updatedOrder: Order) => void; }) => (
   <Card className="flex flex-col">
     <CardHeader className="flex-row items-center justify-between pb-2">
       <CardTitle className="text-lg font-bold font-headline">{table.id}</CardTitle>
@@ -51,13 +51,23 @@ const TableCard = ({ table }: { table: Table }) => (
       )}
     </CardContent>
     <CardFooter className="flex gap-2">
-      <ManageOrderDialog order={table.currentOrder} />
+      <ManageOrderDialog table={table} onOrderUpdate={onOrderUpdate} />
       <AIRecommender orderHistory={table.currentOrder?.items || []} />
     </CardFooter>
   </Card>
 );
 
 export default function OrdersPage() {
+  const [tables, setTables] = useState<Table[]>(initialTables);
+
+  const handleOrderUpdate = (tableId: string, updatedOrder: Order) => {
+    setTables(prevTables => 
+        prevTables.map(table => 
+            table.id === tableId ? { ...table, currentOrder: updatedOrder } : table
+        )
+    );
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center">
@@ -65,7 +75,7 @@ export default function OrdersPage() {
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {tables.map(table => (
-          <TableCard key={table.id} table={table} />
+          <TableCard key={table.id} table={table} onOrderUpdate={handleOrderUpdate} />
         ))}
       </div>
     </div>
