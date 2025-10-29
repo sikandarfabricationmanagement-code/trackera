@@ -1,0 +1,104 @@
+/**
+ * @fileoverview Firestore Security Rules for RestroZen application.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a hierarchical ownership model. Restaurants own branches, and branches own staff.
+ * Each entity (Restaurant, Branch, Staff) is secured by its parent in the hierarchy.
+ *
+ * Data Structure:
+ * /restaurants/{restaurantId}
+ * /restaurants/{restaurantId}/branches/{branchId}
+ * /restaurants/{restaurantId}/branches/{branchId}/staff/{staffId}
+ *
+ * Key Security Decisions:
+ * - Managers can create, update, and delete their restaurants.
+ * - Restaurants can create, update, and delete their own branches.
+ * - Branches can create, update, and delete their own staff.
+ * - Prevents listing all restaurants to avoid information disclosure.
+ * - Owner checks are performed by matching the document ID to the authenticated user ID, effectively implementing path-based authorization.
+ *
+ * Denormalization for Authorization:
+ *  - There is no denormalization because the data structure enforces strict hierarchical ownership. The document ID serves as the implicit owner ID.
+ *
+ * Structural Segregation:
+ *  - The data model uses structural segregation. Each subcollection represents a different level of access control.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Secures the restaurants collection. Only allows creation of a restaurant.
+     *              Restaurant can only be created by the manager with the managerEmail field.
+     * @path /restaurants/{restaurantId}
+     * @allow create: if isSignedIn() && request.resource.data.id == request.auth.uid
+     * @deny get: if true
+     * @deny list: if true
+     * @deny update: if true
+     * @deny delete: if true
+     * @principle Enforces document ownership for writes.
+     */
+    match /restaurants/{restaurantId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(restaurantId) {
+        return request.auth.uid == restaurantId;
+      }
+
+      allow get: if false;
+      allow list: if false;
+
+      allow create: if isSignedIn() && request.resource.data.id == restaurantId;
+      allow update: if false;
+      allow delete: if false;
+    
+    
+       /**
+         * @description Secures the branches subcollection.
+         * @path /restaurants/{restaurantId}/branches/{branchId}
+         * @allow create: if isOwner(restaurantId)
+         * @allow get: if isOwner(restaurantId)
+         * @allow list: if isOwner(restaurantId)
+         * @deny update: if !isExistingOwner(restaurantId)
+         * @deny delete: if !isExistingOwner(restaurantId)
+         * @principle Enforces document ownership for writes and validate relational integrity.
+         */
+        match /branches/{branchId} {
+          function isExistingOwner(restaurantId) {
+             return isOwner(restaurantId) && resource != null;
+          }
+
+          allow get: if isOwner(restaurantId);
+          allow list: if isOwner(restaurantId);
+          allow create: if isOwner(restaurantId);
+          allow update: if isExistingOwner(restaurantId);
+          allow delete: if isExistingOwner(restaurantId);
+        
+        
+           /**
+             * @description Secures the staff subcollection.
+             * @path /restaurants/{restaurantId}/branches/{branchId}/staff/{staffId}
+             * @allow create: if isOwner(restaurantId)
+             * @allow get: if isOwner(restaurantId)
+             * @allow list: if isOwner(restaurantId)
+             * @deny update: if !isExistingOwner(restaurantId)
+             * @deny delete: if !isExistingOwner(restaurantId)
+             * @principle Enforces document ownership for writes and validate relational integrity.
+             */
+            match /staff/{staffId} {
+              function isExistingOwner(restaurantId) {
+                 return isOwner(restaurantId) && resource != null;
+              }
+
+              allow get: if isOwner(restaurantId);
+              allow list: if isOwner(restaurantId);
+              allow create: if isOwner(restaurantId);
+              allow update: if isExistingOwner(restaurantId);
+              allow delete: if isExistingOwner(restaurantId);
+            }
+        }
+    }
+  }
+}

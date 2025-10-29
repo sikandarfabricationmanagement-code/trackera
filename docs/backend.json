@@ -1,0 +1,166 @@
+{
+  "entities": {
+    "Restaurant": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Restaurant",
+      "type": "object",
+      "description": "Represents a restaurant entity.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Restaurant entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the restaurant."
+        },
+        "managerEmail": {
+          "type": "string",
+          "description": "The email address of the restaurant's manager.",
+          "format": "email"
+        },
+        "branchesCount": {
+          "type": "number",
+          "description": "The total number of branches for this restaurant."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "managerEmail",
+        "branchesCount"
+      ]
+    },
+    "Branch": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Branch",
+      "type": "object",
+      "description": "Represents a branch of a restaurant.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Branch entity."
+        },
+        "restaurantId": {
+          "type": "string",
+          "description": "Reference to the Restaurant this branch belongs to. (Relationship: Restaurant 1:N Branch)"
+        },
+        "branchNumber": {
+          "type": "number",
+          "description": "The branch number of the restaurant."
+        },
+        "staffCount": {
+          "type": "number",
+          "description": "The number of staff members in this branch."
+        }
+      },
+      "required": [
+        "id",
+        "restaurantId",
+        "branchNumber",
+        "staffCount"
+      ]
+    },
+    "Staff": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Staff",
+      "type": "object",
+      "description": "Represents a staff member at a restaurant branch.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Staff entity."
+        },
+        "restaurantId": {
+          "type": "string",
+          "description": "Reference to the Restaurant this staff member belongs to. (Relationship: Restaurant 1:N Staff)"
+        },
+        "branchId": {
+          "type": "string",
+          "description": "Reference to the Branch this staff member belongs to. (Relationship: Branch 1:N Staff)"
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the staff member (e.g., Manager, Cashier, Waiter, Kitchen Staff)."
+        }
+      },
+      "required": [
+        "id",
+        "restaurantId",
+        "branchId",
+        "role"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/restaurants/{restaurantId}",
+        "definition": {
+          "entityName": "Restaurant",
+          "schema": {
+            "$ref": "#/backend/entities/Restaurant"
+          },
+          "description": "Stores restaurant information. Each document represents a single restaurant.",
+          "params": [
+            {
+              "name": "restaurantId",
+              "description": "Unique identifier for the restaurant."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/restaurants/{restaurantId}/branches/{branchId}",
+        "definition": {
+          "entityName": "Branch",
+          "schema": {
+            "$ref": "#/backend/entities/Branch"
+          },
+          "description": "Stores branch information for a specific restaurant. Each document represents a branch.",
+          "params": [
+            {
+              "name": "restaurantId",
+              "description": "Unique identifier for the restaurant."
+            },
+            {
+              "name": "branchId",
+              "description": "Unique identifier for the branch."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/restaurants/{restaurantId}/branches/{branchId}/staff/{staffId}",
+        "definition": {
+          "entityName": "Staff",
+          "schema": {
+            "$ref": "#/backend/entities/Staff"
+          },
+          "description": "Stores staff information for a specific branch. Each document represents a staff member.",
+          "params": [
+            {
+              "name": "restaurantId",
+              "description": "Unique identifier for the restaurant."
+            },
+            {
+              "name": "branchId",
+              "description": "Unique identifier for the branch."
+            },
+            {
+              "name": "staffId",
+              "description": "Unique identifier for the staff member."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support the RestroZen application's requirements for restaurant, branch, and staff management. The structure prioritizes authorization independence and query performance. Restaurants are stored at the root level. Branches and Staff are stored as subcollections. \n\nAuthorization Independence is achieved through path-based ownership for private data (Staff, Branches belonging to Restaurants).  There is no reliance on `get()` calls in security rules, enabling atomic operations.\n\nQAPs (Rules are not Filters) are supported through Structural Segregation: Each collection and subcollection inherently represents a specific security posture. For example, listing all Staff members is secured by the collection structure itself (`/restaurants/{restaurantId}/branches/{branchId}/staff/{staffId}`)."
+  }
+}
