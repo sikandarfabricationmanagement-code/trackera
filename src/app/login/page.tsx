@@ -10,6 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useRole } from '@/hooks/use-role';
 import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/logo';
+import { useFirestore } from '@/firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { setDocumentNonBlocking } from '@/firebase';
 
 const AdminLoginTab = () => {
   const { setRole } = useRole();
@@ -90,17 +93,36 @@ const ManagerLoginTab = () => {
 const ManagerRegisterTab = () => {
     const { setRole } = useRole();
     const router = useRouter();
+    const firestore = useFirestore();
 
     const handleRegister = (e: React.FormEvent) => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const restaurantName = formData.get('restaurant-name') as string;
         const managerEmail = formData.get('manager-email') as string;
-        const branchesCount = parseInt(formData.get('branches-count') as string, 10);
-        
-        // Firestore logic to create doc will go here
-        console.log({ restaurantName, managerEmail, branchesCount });
+        const branchesCount = 9; // Hardcoded to 9 as requested
 
+        if (!restaurantName || !managerEmail || !firestore) {
+            alert('An error occurred. Please try again.');
+            return;
+        }
+
+        // Create main restaurant document
+        const restaurantDocRef = doc(firestore, 'restaurants', restaurantName);
+        setDocumentNonBlocking(restaurantDocRef, {
+            managerEmail,
+            branchesCount,
+        }, { merge: true });
+
+        // Create branch subcollections
+        for (let i = 1; i <= branchesCount; i++) {
+            const branchDocRef = doc(firestore, `restaurants/${restaurantName}/branches`, `${i}`);
+            setDocumentNonBlocking(branchDocRef, {
+                staffCount: 0,
+            }, { merge: true });
+        }
+
+        // Set role and redirect
         setRole('manager', { restaurantName, managerEmail });
         router.push(`/manager-dashboard/${restaurantName}`);
     }
@@ -111,10 +133,6 @@ const ManagerRegisterTab = () => {
                 <div className="space-y-2">
                     <Label htmlFor="reg-restaurant-name">Restaurant Name</Label>
                     <Input id="reg-restaurant-name" name="restaurant-name" type="text" placeholder="e.g., The Golden Spoon" required />
-                </div>
-                 <div className="space-y-2">
-                    <Label htmlFor="reg-branches-count">Number of Branches</Label>
-                    <Input id="reg-branches-count" name="branches-count" type="number" placeholder="e.g., 3" required min="1" />
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="reg-manager-email">Manager Email</Label>
@@ -167,8 +185,9 @@ const StaffLoginTab = () => {
                             <SelectValue placeholder="Select branch" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="1">Branch #1</SelectItem>
-                            <SelectItem value="2">Branch #2</SelectItem>
+                            {[...Array(9)].map((_, i) => (
+                                <SelectItem key={i + 1} value={`${i + 1}`}>Branch #{i + 1}</SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                 </div>
