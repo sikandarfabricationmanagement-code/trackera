@@ -6,47 +6,41 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
-  BarChart2,
-  Building,
-  ClipboardList,
   LayoutDashboard,
   Users,
-  Shield,
 } from 'lucide-react';
-import type { UserRole } from '@/hooks/use-role';
+import type { UserRole, UserIdentity } from '@/hooks/use-role';
 
-const managerNavItems = [
-  { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { title: 'Analytics', href: '/analytics', icon: BarChart2 },
-  { title: 'Management', href: '/management', icon: Building },
-  { title: 'Orders', href: '/orders', icon: ClipboardList },
-];
-
-const staffNavItems = [
-  { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { title: 'Orders', href: '/orders', icon: ClipboardList },
-];
-
-const superAdminNavItems = [
-    { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { title: 'Restaurants', href: '/restaurants', icon: Building },
-    { title: 'System Analytics', href: '/system-analytics', icon: BarChart2 },
-    { title: 'Subscriptions', href: '/subscriptions', icon: Shield },
-];
-
-const navConfig = {
-    manager: managerNavItems,
-    staff: staffNavItems,
-    'super-admin': superAdminNavItems
+const getNavItems = (identity: UserIdentity) => {
+    const { role, restaurantName, branchId, staffId } = identity;
+    switch(role) {
+        case 'admin':
+            return [
+                { title: 'Dashboard', href: '/admin-dashboard', icon: LayoutDashboard }
+            ];
+        case 'manager':
+            return [
+                { title: 'Dashboard', href: `/manager-dashboard/${restaurantName}`, icon: LayoutDashboard },
+            ];
+        case 'staff':
+            return [
+                 { title: 'Dashboard', href: `/staff-dashboard/${restaurantName}/${branchId}/${staffId}`, icon: LayoutDashboard },
+            ];
+        default:
+            return [];
+    }
 }
+
 
 interface MainNavProps {
-  role: UserRole;
+  identity: UserIdentity;
 }
 
-export function MainNav({ role }: MainNavProps) {
+export function MainNav({ identity }: MainNavProps) {
   const pathname = usePathname();
-  const navItems = role ? navConfig[role] : [];
+  const navItems = getNavItems(identity);
+
+  if (!identity.role) return null;
 
   return (
     <nav className="flex flex-col gap-2 px-4">

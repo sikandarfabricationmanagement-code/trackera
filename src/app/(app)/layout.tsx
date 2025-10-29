@@ -9,7 +9,7 @@ import { Logo } from '@/components/logo';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { role, isMounted } = useRole();
+  const { role, isMounted, identity } = useRole();
   const router = useRouter();
 
   useEffect(() => {
@@ -27,19 +27,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <Skeleton className="h-8 w-8 rounded-full" />
             </div>
           </div>
-          <div className="flex flex-1">
-            <div className="hidden border-r bg-muted/40 md:block">
-              <div className="flex h-full max-h-screen flex-col gap-2 p-4">
-                <Skeleton className="h-8 w-40 mb-4" />
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-              </div>
-            </div>
-            <div className="flex-1 p-4">
-              <Skeleton className="h-full w-full" />
-            </div>
-          </div>
+          <main className="flex flex-1 items-center justify-center p-4">
+             <Skeleton className="h-full w-full" />
+          </main>
         </div>
     );
   }
@@ -55,7 +45,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </a>
           </div>
           <div className="flex-1">
-            <MainNav role={role} />
+            <MainNav identity={identity} />
           </div>
         </div>
       </div>

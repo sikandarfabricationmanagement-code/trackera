@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle, BarChart, Users, Building, FileText } from 'lucide-react';
+import { CheckCircle, BarChart, Users, Building, FileText, Bot } from 'lucide-react';
 
 export default function MarketingPage() {
   return (
@@ -22,7 +22,7 @@ export default function MarketingPage() {
             </a>
             <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
                 <Link href="#features" className="text-muted-foreground transition-colors hover:text-foreground">Features</Link>
-                <Link href="#about" className="text-muted-foreground transition-colors hover:text-foreground">About</Link>
+                <Link href="#pricing" className="text-muted-foreground transition-colors hover:text-foreground">Pricing</Link>
                 <Link href="#testimonials" className="text-muted-foreground transition-colors hover:text-foreground">Testimonials</Link>
                 <Link href="#contact" className="text-muted-foreground transition-colors hover:text-foreground">Contact</Link>
             </nav>
@@ -47,12 +47,12 @@ export default function MarketingPage() {
                                 Trackera — Smart Business. Simplified.
                             </h1>
                             <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                                A next-gen POS and restaurant management SaaS to streamline your operations, from billing and inventory to payroll and multi-branch management.
+                                A next-gen POS and restaurant management SaaS to streamline your operations, from billing and inventory to payroll and multi-branch management. Powered by Optineura Technology.
                             </p>
                         </div>
                         <div className="flex flex-col gap-2 min-[400px]:flex-row">
                             <Button size="lg" asChild>
-                                <Link href="#contact">Get a Demo</Link>
+                                <Link href="/login">Get Started</Link>
                             </Button>
                             <Button size="lg" variant="outline" asChild>
                                 <Link href="#features">Learn More</Link>
@@ -85,7 +85,7 @@ export default function MarketingPage() {
             <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:max-w-none mt-12">
               <div className="grid gap-1 rounded-lg border bg-card p-6 text-center shadow-sm hover:shadow-lg transition-shadow">
                 <BarChart className="h-10 w-10 mx-auto text-primary" />
-                <h3 className="text-lg font-bold font-headline">Advanced Billing & POS</h3>
+                <h3 className="text-lg font-bold font-headline">Billing & POS</h3>
                 <p className="text-sm text-muted-foreground">Streamline your checkout process with our intuitive and powerful Point of Sale system.</p>
               </div>
               <div className="grid gap-1 rounded-lg border bg-card p-6 text-center shadow-sm hover:shadow-lg transition-shadow">
@@ -109,34 +109,73 @@ export default function MarketingPage() {
                 <p className="text-sm text-muted-foreground">Customized views for every role, from kitchen staff to managers and owners.</p>
               </div>
                <div className="grid gap-1 rounded-lg border bg-card p-6 text-center shadow-sm hover:shadow-lg transition-shadow">
-                <CheckCircle className="h-10 w-10 mx-auto text-primary" />
-                <h3 className="text-lg font-bold font-headline">Actionable Analytics</h3>
-                <p className="text-sm text-muted-foreground">Gain insights into your sales, customer behavior, and operational efficiency.</p>
+                <Bot className="h-10 w-10 mx-auto text-primary" />
+                <h3 className="text-lg font-bold font-headline">AI-Powered Analytics</h3>
+                <p className="text-sm text-muted-foreground">Gain insights into your sales, customer behavior, and operational efficiency with AI.</p>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="about" className="w-full py-12 md:py-24 lg:py-32">
+         <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-              <div className="space-y-4">
-                <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">About Us</div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">Powered by Optineura Technology</h2>
-                <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed">
-                  Trackera is a flagship product from Optineura, a technology company dedicated to creating innovative solutions that empower businesses. We believe in the power of simplification and efficiency, and Trackera is the culmination of our expertise in building robust, user-friendly software for the modern world.
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">Simple, Transparent Pricing</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Choose a plan that fits your business. No hidden fees, ever.
                 </p>
               </div>
-              <div className="flex items-center justify-center">
-                <Image 
-                  src="https://picsum.photos/seed/trackera-about/550/310"
-                  width="550"
-                  height="310"
-                  alt="About Trackera"
-                  data-ai-hint="team working office"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover"
-                />
-              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:max-w-none mt-12">
+              <Card className="flex flex-col">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-2xl font-headline">Starter</CardTitle>
+                  <CardDescription>For new restaurants getting off the ground.</CardDescription>
+                  <p className="text-4xl font-bold">₹999<span className="text-sm font-normal text-muted-foreground">/mo</span></p>
+                </CardHeader>
+                <CardContent className="flex-1 grid gap-4">
+                  <ul className="grid gap-2 text-sm text-muted-foreground">
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Single Branch</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Basic POS & Billing</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Staff Management (10 users)</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Basic Analytics</li>
+                  </ul>
+                  <Button className="mt-auto w-full">Choose Plan</Button>
+                </CardContent>
+              </Card>
+              <Card className="border-primary flex flex-col shadow-lg">
+                 <CardHeader className="pb-4">
+                  <CardTitle className="text-2xl font-headline">Pro</CardTitle>
+                  <CardDescription>For growing businesses that need more power.</CardDescription>
+                  <p className="text-4xl font-bold">₹2499<span className="text-sm font-normal text-muted-foreground">/mo</span></p>
+                </CardHeader>
+                <CardContent className="flex-1 grid gap-4">
+                  <ul className="grid gap-2 text-sm text-muted-foreground">
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Up to 5 Branches</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Advanced POS & Billing</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Inventory Management</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Advanced Analytics</li>
+                  </ul>
+                  <Button className="mt-auto w-full">Choose Plan</Button>
+                </CardContent>
+              </Card>
+              <Card className="flex flex-col">
+                 <CardHeader className="pb-4">
+                  <CardTitle className="text-2xl font-headline">Premium</CardTitle>
+                  <CardDescription>For large chains and enterprises.</CardDescription>
+                  <p className="text-4xl font-bold">₹4999<span className="text-sm font-normal text-muted-foreground">/mo</span></p>
+                </CardHeader>
+                <CardContent className="flex-1 grid gap-4">
+                  <ul className="grid gap-2 text-sm text-muted-foreground">
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Unlimited Branches</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Full POS & Billing Suite</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> Payroll & Advanced Staffing</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-green-500" /> AI-Powered Analytics</li>
+                  </ul>
+                   <Button className="mt-auto w-full">Choose Plan</Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -193,9 +232,9 @@ export default function MarketingPage() {
         <section id="contact" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">Ready to Get Started?</h2>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">Get in Touch</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Let's talk about how Trackera can help your business. Fill out the form below for a demo or inquiry.
+                Have questions or want a personalized demo? Fill out the form below and we'll get back to you.
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
@@ -203,7 +242,7 @@ export default function MarketingPage() {
                 <Input type="text" placeholder="Your Name" className="max-w-lg flex-1" />
                 <Input type="email" placeholder="Your Email" className="max-w-lg flex-1" />
                 <Textarea placeholder="Your Message" className="max-w-lg flex-1" />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Submit Inquiry</Button>
               </form>
             </div>
           </div>
@@ -211,7 +250,7 @@ export default function MarketingPage() {
       </main>
       <footer className="flex items-center justify-center p-4 border-t bg-muted/40">
          <p className="text-center text-sm text-muted-foreground">
-            Made by Optineura. &copy; {new Date().getFullYear()} Trackera. All rights reserved.
+            &copy; {new Date().getFullYear()} Optineura Technology. All rights reserved.
         </p>
       </footer>
     </div>

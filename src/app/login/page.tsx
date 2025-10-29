@@ -1,91 +1,252 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useRole } from '@/hooks/use-role';
+import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/logo';
-import { Users, ChefHat, ShieldCheck } from 'lucide-react';
-import { useEffect } from 'react';
 
-export default function LoginPage() {
-  const { setRole, role } = useRole();
+const AdminLoginTab = () => {
+  const { setRole } = useRole();
   const router = useRouter();
 
-  useEffect(() => {
-    if (role) {
-      router.push('/dashboard');
-    }
-  }, [role, router]);
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('email');
 
-  const handleLogin = (selectedRole: 'manager' | 'staff' | 'super-admin') => {
-    setRole(selectedRole);
-    router.push('/dashboard');
+    if (email === 'admin@gmail.com') {
+      setRole('admin');
+      router.push('/admin-dashboard');
+    } else {
+      alert('Invalid admin credentials.');
+    }
   };
 
   return (
+    <form onSubmit={handleLogin}>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="admin-email">Admin Email</Label>
+          <Input id="admin-email" name="email" type="email" placeholder="admin@gmail.com" required />
+        </div>
+        <Button type="submit" className="w-full">Login as Admin</Button>
+      </CardContent>
+    </form>
+  );
+};
+
+const ManagerLoginTab = () => {
+    const { setRole } = useRole();
+    const router = useRouter();
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        // In a real app, you'd verify credentials.
+        // For now, we'll just set the role and redirect.
+        const formData = new FormData(e.target as HTMLFormElement);
+        const restaurantName = formData.get('restaurant-name') as string;
+        const managerEmail = formData.get('manager-email') as string;
+
+        if (restaurantName && managerEmail) {
+            setRole('manager', { restaurantName, managerEmail });
+            router.push(`/manager-dashboard/${restaurantName}`);
+        } else {
+            alert('Please select a restaurant and enter your email.');
+        }
+    }
+
+    return (
+        <form onSubmit={handleLogin}>
+            <CardContent className="space-y-4">
+                 <div className="space-y-2">
+                    <Label htmlFor="restaurant-name">Restaurant</Label>
+                    <Select name="restaurant-name">
+                        <SelectTrigger id="restaurant-name">
+                            <SelectValue placeholder="Select your restaurant" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {/* This will be populated from Firestore */}
+                            <SelectItem value="Shivraj">Shivraj</SelectItem>
+                            <SelectItem value="Kailash Parbat">Kailash Parbat</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="manager-email">Manager Email</Label>
+                    <Input id="manager-email" name="manager-email" type="email" placeholder="manager@example.com" required />
+                </div>
+                <Button type="submit" className="w-full">Login as Manager</Button>
+            </CardContent>
+        </form>
+    );
+};
+
+const ManagerRegisterTab = () => {
+    const { setRole } = useRole();
+    const router = useRouter();
+
+    const handleRegister = (e: React.FormEvent) => {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        const restaurantName = formData.get('restaurant-name') as string;
+        const managerEmail = formData.get('manager-email') as string;
+        const branchesCount = parseInt(formData.get('branches-count') as string, 10);
+        
+        // Firestore logic to create doc will go here
+        console.log({ restaurantName, managerEmail, branchesCount });
+
+        setRole('manager', { restaurantName, managerEmail });
+        router.push(`/manager-dashboard/${restaurantName}`);
+    }
+
+    return (
+         <form onSubmit={handleRegister}>
+            <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label htmlFor="reg-restaurant-name">Restaurant Name</Label>
+                    <Input id="reg-restaurant-name" name="restaurant-name" type="text" placeholder="e.g., The Golden Spoon" required />
+                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="reg-branches-count">Number of Branches</Label>
+                    <Input id="reg-branches-count" name="branches-count" type="number" placeholder="e.g., 3" required min="1" />
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="reg-manager-email">Manager Email</Label>
+                    <Input id="reg-manager-email" name="manager-email" type="email" placeholder="your-email@example.com" required />
+                </div>
+                <Button type="submit" className="w-full">Register and Login</Button>
+            </CardContent>
+        </form>
+    );
+}
+
+const StaffLoginTab = () => {
+    const { setRole } = useRole();
+    const router = useRouter();
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        const restaurantName = formData.get('restaurant-name') as string;
+        const branchId = formData.get('branch-id') as string;
+        const staffId = formData.get('staff-id') as string;
+
+        if (restaurantName && branchId && staffId) {
+            setRole('staff', { restaurantName, branchId, staffId });
+            router.push(`/staff-dashboard/${restaurantName}/${branchId}/${staffId}`);
+        } else {
+            alert('Please fill in all fields.');
+        }
+    }
+
+    return (
+        <form onSubmit={handleLogin}>
+            <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label htmlFor="staff-restaurant-name">Restaurant</Label>
+                    <Select name="restaurant-name">
+                        <SelectTrigger id="staff-restaurant-name">
+                            <SelectValue placeholder="Select restaurant" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Shivraj">Shivraj</SelectItem>
+                            <SelectItem value="Kailash Parbat">Kailash Parbat</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="staff-branch-id">Branch</Label>
+                     <Select name="branch-id">
+                        <SelectTrigger id="staff-branch-id">
+                            <SelectValue placeholder="Select branch" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="1">Branch #1</SelectItem>
+                            <SelectItem value="2">Branch #2</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="staff-id">Staff ID</Label>
+                    <Input id="staff-id" name="staff-id" type="text" placeholder="e.g., shivraj11" required />
+                </div>
+                <Button type="submit" className="w-full">Login as Staff</Button>
+            </CardContent>
+        </form>
+    );
+};
+
+export default function LoginPage() {
+  return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-muted/40 p-4">
       <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-      <div className="mb-8 flex items-center gap-4 text-primary">
-        <a href="/" className='flex items-center gap-4'>
-            <Logo className="h-12 w-12" />
-            <h1 className="font-headline text-5xl font-bold tracking-tighter">Trackera</h1>
+       <div className="mb-8 flex flex-col items-center text-center gap-2 text-primary">
+        <a href="/" className="flex items-center gap-4">
+          <Logo className="h-12 w-12" />
+          <h1 className="font-headline text-5xl font-bold tracking-tighter">Trackera</h1>
         </a>
+        <p className="text-sm text-muted-foreground">Smart Restaurant Management powered by Optineura Technology</p>
       </div>
-      <Card className="w-full max-w-md shadow-2xl rounded-2xl">
-        <CardHeader className="text-center">
-          <CardTitle className="font-headline text-3xl tracking-tight">Welcome Back</CardTitle>
-          <CardDescription>Select your role to sign in to your dashboard</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 gap-4">
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-28 flex-col gap-2 text-lg hover:bg-primary/5 hover:border-primary transition-all duration-300 group"
-              onClick={() => handleLogin('super-admin')}
-            >
-              <div className="flex items-center gap-4">
-                <ShieldCheck className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-                <div className="text-left">
-                    <p className="font-semibold">Super Admin</p>
-                    <p className="text-sm text-muted-foreground">Manage Trackera platform.</p>
-                </div>
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-28 flex-col gap-2 text-lg hover:bg-primary/5 hover:border-primary transition-all duration-300 group"
-              onClick={() => handleLogin('manager')}
-            >
-              <div className="flex items-center gap-4">
-                <Users className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-                <div className="text-left">
-                    <p className="font-semibold">Manager</p>
-                    <p className="text-sm text-muted-foreground">Access admin and analytics tools.</p>
-                </div>
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-28 flex-col gap-2 text-lg hover:bg-primary/5 hover:border-primary transition-all duration-300 group"
-              onClick={() => handleLogin('staff')}
-            >
-               <div className="flex items-center gap-4">
-                <ChefHat className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-                 <div className="text-left">
-                    <p className="font-semibold">Staff</p>
-                    <p className="text-sm text-muted-foreground">Access orders and table management.</p>
-                </div>
-              </div>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+
+      <Tabs defaultValue="manager" className="w-full max-w-md">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="admin">Admin</TabsTrigger>
+          <TabsTrigger value="manager">Manager</TabsTrigger>
+          <TabsTrigger value="staff">Staff</TabsTrigger>
+        </TabsList>
+        <TabsContent value="admin">
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Admin Login</CardTitle>
+              <CardDescription>Enter admin credentials to access the dashboard.</CardDescription>
+            </CardHeader>
+            <AdminLoginTab />
+          </Card>
+        </TabsContent>
+        <TabsContent value="manager">
+            <Tabs defaultValue="login" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="login">Login</TabsTrigger>
+                    <TabsTrigger value="register">Register</TabsTrigger>
+                </TabsList>
+                <TabsContent value="login">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline">Manager Login</CardTitle>
+                            <CardDescription>Select your restaurant to log in.</CardDescription>
+                        </CardHeader>
+                        <ManagerLoginTab />
+                    </Card>
+                </TabsContent>
+                 <TabsContent value="register">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline">Register Restaurant</CardTitle>
+                            <CardDescription>Create a new restaurant account.</CardDescription>
+                        </CardHeader>
+                        <ManagerRegisterTab />
+                    </Card>
+                </TabsContent>
+            </Tabs>
+        </TabsContent>
+        <TabsContent value="staff">
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Staff Login</CardTitle>
+              <CardDescription>Enter your details to access your dashboard.</CardDescription>
+            </CardHeader>
+            <StaffLoginTab />
+          </Card>
+        </TabsContent>
+      </Tabs>
       <footer className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Made by Optineura. &copy; {new Date().getFullYear()} Trackera. All rights reserved.</p>
+        &copy; {new Date().getFullYear()} Optineura Technology. All rights reserved.
       </footer>
     </div>
   );

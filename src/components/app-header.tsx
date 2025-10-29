@@ -9,7 +9,7 @@ import { MainNav } from './main-nav';
 import { useRole } from '@/hooks/use-role';
 
 export function AppHeader() {
-  const { role } = useRole();
+  const { identity } = useRole();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
@@ -37,7 +37,7 @@ export function AppHeader() {
                     Trackera
                   </span>
                 </a>
-              <MainNav role={role} />
+              <MainNav identity={identity} />
             </SheetContent>
           </Sheet>
         </div>

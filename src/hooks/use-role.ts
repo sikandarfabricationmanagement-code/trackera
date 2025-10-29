@@ -2,44 +2,72 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-export type UserRole = 'manager' | 'staff' | 'super-admin' | null;
+export type UserRole = 'admin' | 'manager' | 'staff' | null;
+
+export interface UserIdentity {
+  // Common
+  role: UserRole;
+  // Manager
+  restaurantName?: string;
+  managerEmail?: string;
+  // Staff
+  branchId?: string;
+  staffId?: string;
+}
+
+const initialIdentity: UserIdentity = {
+    role: null,
+};
 
 export const useRole = () => {
-  const [role, setRole] = useState<UserRole>(null);
+  const [identity, setIdentity] = useState<UserIdentity>(initialIdentity);
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    let storedRole: UserRole = null;
+    let storedIdentity: UserIdentity | null = null;
     try {
-      storedRole = localStorage.getItem('userRole') as UserRole;
-    } catch (error) {
-       // Silently fail if localStorage is not available
-    }
-
-    if (storedRole && ['manager', 'staff', 'super-admin'].includes(storedRole)) {
-      setRole(storedRole);
-    }
-    setIsMounted(true);
-  }, []);
-
-  const setRoleAndStore = useCallback((newRole: 'manager' | 'staff' | 'super-admin' | null) => {
-    setRole(newRole);
-    try {
-      if (newRole) {
-        localStorage.setItem('userRole', newRole);
-      } else {
-        localStorage.removeItem('userRole');
+      const item = localStorage.getItem('userSession');
+      if (item) {
+        storedIdentity = JSON.parse(item) as UserIdentity;
       }
     } catch (error) {
        // Silently fail if localStorage is not available
     }
+
+    if (storedIdentity && storedIdentity.role) {
+      setIdentity(storedIdentity);
+    }
+    setIsMounted(true);
+  }, []);
+
+  const setRole = useCallback((role: UserRole, details: Omit<UserIdentity, 'role'> = {}) => {
+    const newIdentity: UserIdentity = { ...details, role };
+    setIdentity(newIdentity);
+    try {
+        if (role) {
+            localStorage.setItem('userSession', JSON.stringify(newIdentity));
+        } else {
+            localStorage.removeItem('userSession');
+        }
+    } catch (error) {
+       // Silently fail
+    }
   }, []);
   
   const logout = useCallback(() => {
-    setRoleAndStore(null);
+    setIdentity(initialIdentity);
+     try {
+        localStorage.removeItem('userSession');
+     } catch(error) {}
     router.push('/login');
-  }, [setRoleAndStore, router]);
+  }, [router]);
 
-  return { role: isMounted ? role : null, setRole: setRoleAndStore, logout, isMounted };
+  return { 
+    identity: isMounted ? identity : initialIdentity, 
+    role: isMounted ? identity.role : null,
+    setRole, 
+    logout, 
+    isMounted 
+  };
 };
