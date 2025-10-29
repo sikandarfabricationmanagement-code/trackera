@@ -115,14 +115,14 @@ export function ManageOrderDialog({ table: initialTable, onOrderUpdate }: Manage
                     {currentOrder.items.map(item => (
                          <li key={item.id} className="flex justify-between items-center">
                             <span>{item.name} x {item.quantity}</span>
-                            <span>${(item.price * item.quantity).toFixed(2)}</span>
+                            <span>₹{(item.price * item.quantity).toFixed(2)}</span>
                         </li>
                     ))}
                 </ul>
                 <Separator className="my-4" />
                  <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span>${currentOrder.total.toFixed(2)}</span>
+                    <span>₹{currentOrder.total.toFixed(2)}</span>
                 </div>
             </div>
 
@@ -154,7 +154,7 @@ export function ManageOrderDialog({ table: initialTable, onOrderUpdate }: Manage
                                 <SelectGroup key={category}>
                                     <SelectLabel>{category}</SelectLabel>
                                     {menuItems.filter(item => item.category === category).map(item => (
-                                        <SelectItem key={item.id} value={item.id}>{item.name} - ${item.price.toFixed(2)}</SelectItem>
+                                        <SelectItem key={item.id} value={item.id}>{item.name} - ₹{item.price.toFixed(2)}</SelectItem>
                                     ))}
                                 </SelectGroup>
                             ))}

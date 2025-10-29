@@ -257,7 +257,7 @@ const MenuTab = () => {
                     <TableCell className="font-medium">{item.name}</TableCell>
                     <TableCell>{item.category}</TableCell>
                     <TableCell><Badge variant={item.type === 'Veg' ? 'default' : 'destructive'} className={item.type === 'Veg' ? 'bg-green-500/20 text-green-700 border-green-500/20' : 'bg-red-500/20 text-red-700 border-red-500/20'}>{item.type}</Badge></TableCell>
-                    <TableCell>${item.price.toFixed(2)}</TableCell>
+                    <TableCell>₹{item.price.toFixed(2)}</TableCell>
                     <TableCell>
                         <div className="flex items-center space-x-2">
                             <Switch

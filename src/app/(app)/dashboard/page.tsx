@@ -14,7 +14,7 @@ const ManagerDashboard = () => (
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
+            <div className="text-2xl font-bold">₹4,52,318.90</div>
             <p className="text-xs text-muted-foreground">+20.1% from last month</p>
           </CardContent>
         </Card>
@@ -117,7 +117,7 @@ const SuperAdminDashboard = () => (
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$1.2M</div>
+              <div className="text-2xl font-bold">₹1.2M</div>
               <p className="text-xs text-muted-foreground">+5.2% from last month</p>
             </CardContent>
           </Card>
