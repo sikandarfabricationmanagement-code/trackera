@@ -36,14 +36,14 @@ export const restaurants: Restaurant[] = [
 ];
 
 export const menuItems: MenuItem[] = [
-    { id: 'm1', name: 'Paneer Tikka', price: 12.00, category: 'Starters', type: 'Veg' },
-    { id: 'm5', name: 'Samosa', price: 6.00, category: 'Starters', type: 'Veg' },
-    { id: 'm2', name: 'Garlic Naan', price: 4.00, category: 'Main Course', type: 'Veg' },
-    { id: 'm3', name: 'Palak Paneer', price: 13.00, category: 'Main Course', type: 'Veg' },
-    { id: 'm6', name: 'Veg Biryani', price: 14.00, category: 'Main Course', type: 'Veg' },
-    { id: 'm7', name: 'Gulab Jamun', price: 5.00, category: 'Desserts', type: 'Veg' },
-    { id: 'm4', name: 'Mango Lassi', price: 5.00, category: 'Drinks', type: 'Veg' },
-    { id: 'm8', name: 'Coke', price: 3.00, category: 'Drinks', type: 'Veg' },
+    { id: 'm1', name: 'Paneer Tikka', price: 12.00, category: 'Starters', type: 'Veg', isAvailable: true },
+    { id: 'm5', name: 'Samosa', price: 6.00, category: 'Starters', type: 'Veg', isAvailable: true },
+    { id: 'm2', name: 'Garlic Naan', price: 4.00, category: 'Main Course', type: 'Veg', isAvailable: true },
+    { id: 'm3', name: 'Palak Paneer', price: 13.00, category: 'Main Course', type: 'Veg', isAvailable: false },
+    { id: 'm6', name: 'Veg Biryani', price: 14.00, category: 'Main Course', type: 'Veg', isAvailable: true },
+    { id: 'm7', name: 'Gulab Jamun', price: 5.00, category: 'Desserts', type: 'Veg', isAvailable: true },
+    { id: 'm4', name: 'Mango Lassi', price: 5.00, category: 'Drinks', type: 'Veg', isAvailable: true },
+    { id: 'm8', name: 'Coke', price: 3.00, category: 'Drinks', type: 'Veg', isAvailable: true },
 ];
 
 const sampleOrder1: Order = {

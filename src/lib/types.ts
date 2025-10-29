@@ -31,6 +31,7 @@ export type MenuItem = {
   price: number;
   category: 'Starters' | 'Main Course' | 'Desserts' | 'Drinks';
   type: 'Veg' | 'Non-Veg';
+  isAvailable: boolean;
 };
 
 export type OrderItem = {
